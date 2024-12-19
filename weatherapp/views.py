@@ -12,15 +12,33 @@ from django.contrib.auth.decorators import login_required
 
 def signup_view(request):
     if request.method == 'POST':
+        errors={}
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
 
+        if password!=confirm_password:
+            errors["confirm_password"]="Password donot match!"
+
+        if username==username:
+            errors["username"]="username already exists!"
+
+        if email==email:
+            errors["email"]="email already exists!"
+
+
+        if CustomUser.objects.filter(username=username).exists():
+            messages.error(request, 'username is already taken')
+            # print('email already taken')
+        
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request, 'Email is already taken')
-            print('email already taken')
-            return redirect('signup')
+            # print('email already taken')
+            
+        if errors:
+            return render(request,'signup.html',{'errors':errors})
+
         
         if password==confirm_password:
             user=CustomUser.objects.create_user(
@@ -63,14 +81,17 @@ def home_view(request):
 def weather(request):
     if 'city' in request.POST:
         city=request.POST.get('city')
+        print(city)
     else:
-        city='calicut'
+        city='malappuram'
+
     APP_ID=os.getenv('APP_ID')
     url=f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={APP_ID}"
     PARAMS= {'units':'metric'}
 
     try:
-        data = requests.get(url ,params=PARAMS).json()
+        data = requests.get(url,params=PARAMS).json()
+        print(data)
         description=data['weather'][0]['description']
         icon=data['weather'][0]['icon']
         temp=data['main']['temp']
