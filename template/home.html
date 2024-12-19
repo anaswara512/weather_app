@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    {% comment %} <script>
+        const dropdownButton = document.getElementById('dropdown-button');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        
+        dropdownButton.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+            }); 
+            </script> {% endcomment %}
+</head>
+    <body class="bg-center h-screen" style="background-image: url('https://img.freepik.com/free-photo/weather-effects-collage-concept_23-2150062071.jpg?ga=GA1.1.623056348.1730528705&semt=ais_tags_boosted');  background-size:cover;" >
+    {%block content%}
+    {% include "navbar.html" %}
+    <div class="flex items-center justify-center min-h-screen">
+  <button class="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 active:bg-blue-800">
+    <a href={%url 'weather'%} >
+    Check weather
+    </a>
+  </button>
+</div>
+    {%endblock content%}
+</body>
+</html>
